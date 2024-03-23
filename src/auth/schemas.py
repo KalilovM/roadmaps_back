@@ -10,6 +10,12 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     username: str | None
 
+
 class AccessToken(BaseModel):
     access_token: str
     token_type: str
+
+
+class LoginRequest(BaseModel):
+    username: str
+    password: str

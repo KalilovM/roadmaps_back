@@ -12,7 +12,7 @@ from src.auth.constants import (
     ALGORITHM,
     REFRESH_TOKEN_EXPIRE_MINUTES,
 )
-from src.auth.schemas import Token, AccessToken
+from src.auth.schemas import Token, AccessToken, LoginRequest
 from src.auth.services import (
     authenticate_user,
     create_access_token,
@@ -21,15 +21,18 @@ from src.auth.services import (
 from src.auth.config import oauth2_bearer
 from src.database import get_db
 from jose import jwt, JWTError
+from src.logger import logger
+
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 @router.post("/login")
 async def get_access_token(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+    form_data: LoginRequest,
     db: Session = Depends(get_db),
 ) -> Token:
+    logger.info(f"form_data: {form_data.username}, {form_data.password}")
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
         raise HTTPException(
