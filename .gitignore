@@ -1,0 +1,5 @@
+.vscode/
+.idea/
+.DB_Store
+__pycache__/
+.venv/
